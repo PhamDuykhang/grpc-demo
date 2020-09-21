@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/timestamp.proto";
+
+message CalculatorRequest{
+  string Name = 1;
+  int64 A = 2;
+  int64 B = 3;
+  Operator O = 4;
+  google.protobuf.Timestamp CallingTime = 5;
+}
+//the calculator response message it will get when call CalculateService
+message CalculatorResponse {
+  string Name = 1;
+  int64 A = 2;
+  int64 B = 3;
+  int64 R = 4;
+  Operator O = 5;
+  google.protobuf.Timestamp ResponseTime = 6;
+
+}
+
+enum Operator {
+  PLUS = 0;
+  SUB = 1;
+  DIV = 2;
+  MULTI = 4;
+}
+
+enum Level {
+  Excellent = 0;
+  Good = 1;
+  Normal = 2;
+  Bad = 4;
+}
+
+message Pokemon {
+  string Name = 1;
+  string Type = 2;
+  int64  Strength = 3;
+  int64  HP = 4;
+  int64  Armor = 5;
+  google.protobuf.Timestamp  CatchingDate = 6;
+}
+
+message CheckedPokemon {
+  string Name = 1;
+  string Type = 2;
+  int64  Strength = 3;
+  int64  HP = 4;
+  int64  Armor = 5;
+  google.protobuf.Timestamp  CatchingDate = 6;
+  google.protobuf.Timestamp  CheckTime = 7;
+  Level level = 8;
+  string Comments = 9;
+}
+
+message GetListPokemon {
+  int64 Size = 1;
+}
+
+message PokemonStatResponse {
+  int64 Total = 1;
+  int64 Excellent = 2;
+  int64 Good = 3;
+  int64 Normal = 4;
+  int64 Bad = 5;
+  string Message = 6;
+}
+
+
+service ExampleService {
+  //Unary RPCs
+  //Do call Do stub and get response that all
+  rpc Do(CalculatorRequest)returns (CalculatorResponse){};
+  //AskProfessorOak client stream
+  rpc AskProfessorOak(stream Pokemon) returns (PokemonStatResponse){};
+  //GetPokemonDetail server stream
+  rpc GetPokemonDetail(GetListPokemon) returns (stream CheckedPokemon){};
+  //Talk bi-streams
+  rpc Talk(stream Pokemon) returns (stream CheckedPokemon){};
+}
+
