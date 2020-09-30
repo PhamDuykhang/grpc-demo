@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "proto";
+package proto;
+
+message PingMessage {
+  string greeting = 1;
+}
+service Ping {
+  rpc SayHello(PingMessage) returns (PingMessage) {}
+}

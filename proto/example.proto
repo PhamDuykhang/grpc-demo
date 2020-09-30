@@ -1,8 +1,36 @@
 syntax = "proto3";
 
+option go_package = "proto";
 package proto;
 
 import "google/protobuf/timestamp.proto";
+
+
+service ExampleService {
+  //Unary RPCs
+  //Do call Do stub and get response that all
+  rpc Do(CalculatorRequest)returns (CalculatorResponse){};
+  //AskProfessorOak client stream
+  rpc AskProfessorOak(stream Pokemon) returns (PokemonStatResponse){};
+  //GetPokemonDetail server stream
+  rpc GetPokemonDetail(GetListPokemon) returns (stream CheckedPokemon){};
+  //Talk bi-streams
+  rpc Talk(stream Pokemon) returns (stream CheckedPokemon){};
+}
+
+service User {
+  rpc Login(LoginMessage) returns (TokenPlaceHolder) {};
+}
+
+
+message LoginMessage {
+  string user_name = 1;
+  string password = 2;
+}
+
+message TokenPlaceHolder {
+  string JWTToken = 1;
+}
 
 message CalculatorRequest{
   string Name = 1;
@@ -37,12 +65,13 @@ enum Level {
 }
 
 message Pokemon {
+  string id = 8;
   string Name = 1;
   string Type = 2;
   int64  Strength = 3;
   int64  HP = 4;
   int64  Armor = 5;
-  google.protobuf.Timestamp  CatchingDate = 6;
+  google.protobuf.Timestamp  CatchingTime = 6;
 }
 
 message CheckedPokemon {
@@ -51,7 +80,7 @@ message CheckedPokemon {
   int64  Strength = 3;
   int64  HP = 4;
   int64  Armor = 5;
-  google.protobuf.Timestamp  CatchingDate = 6;
+  google.protobuf.Timestamp  CatchingTime = 6;
   google.protobuf.Timestamp  CheckTime = 7;
   Level level = 8;
   string Comments = 9;
@@ -68,18 +97,5 @@ message PokemonStatResponse {
   int64 Normal = 4;
   int64 Bad = 5;
   string Message = 6;
-}
-
-
-service ExampleService {
-  //Unary RPCs
-  //Do call Do stub and get response that all
-  rpc Do(CalculatorRequest)returns (CalculatorResponse){};
-  //AskProfessorOak client stream
-  rpc AskProfessorOak(stream Pokemon) returns (PokemonStatResponse){};
-  //GetPokemonDetail server stream
-  rpc GetPokemonDetail(GetListPokemon) returns (stream CheckedPokemon){};
-  //Talk bi-streams
-  rpc Talk(stream Pokemon) returns (stream CheckedPokemon){};
 }
 
